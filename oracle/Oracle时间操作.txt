@@ -1,0 +1,127 @@
+--网上搜索，不再整理
+Oracle日期类操作（格式 加减乘 取毫秒）
+
+1.日期格式、实验
+	可以参考oracle官方文档（Table 2-15 Datetime Format Elements）：
+		http://download.oracle.com/docs/cd/B19306_01/server.102/b14200/sql_elements004.htm#SQLRF00210
+		d-----------一周中的星期几
+		day---------天的名字
+		dd----------月中的第几天
+		ddd---------年中的第几天
+		dy----------天的简写
+		iw----------ISO标准的年中的第几周
+		iyyy--------ISO标准的四位年份
+		yyyy--------四位年份
+		yyy---------年份的最后三位
+		yy----------年份的最后两位
+		y-----------年份的最后一位
+		hh或hh12----小时，按12小时计
+		hh24--------小时，按24小时计
+		mi----------分
+		ss----------秒
+		mm----------月
+		mon---------月份的简写
+		month-------月份的全名
+		w-----------该月的第几个星期
+		ww----------年中的第几个星期
+
+	sys@ora10g>select sysdate,to_char(sysdate,'d day dd ddd dy iw') "d day dd ddd dy iw" from dual;
+
+	SYSDATE d day dd ddd dy iw
+	------------------- -------------------------
+	2009-03-05 03:20:00 5 thursday 05 064 thu 10
+
+	sys@ora10g>select sysdate,to_char(sysdate,'iyyy yyyy yyy yy y') "iyyy yyyy yyy yy y" from dual;
+
+	SYSDATE iyyy yyyy yyy yy y
+	------------------- ------------------
+	2009-03-05 03:20:37 2009 2009 009 09 9
+
+	sys@ora10g>select sysdate,to_char(sysdate,'hh hh12 hh24 mi ss') "hh hh12 hh24 mi ss" from dual;
+
+	SYSDATE hh hh12 hh24 mi ss
+	------------------- -------------------
+	2009-03-05 03:21:24 03 03 03 21 24
+
+	sys@ora10g>select sysdate,to_char(sysdate,'mm mon month w ww') "mm mon month w ww" from dual;
+
+	SYSDATE mm mon month w ww
+	------------------- ---------------------
+	2009-03-05 03:22:30 03 mar march 1 10
+
+2.日期到字符操作to_char
+	sys@ora10g>select sysdate, to_char(sysdate,'yyyy-MM-dd HH24:mi:ss') time from dual;
+
+	SYSDATE TIME
+	------------------- -------------------
+	2009-03-05 03:24:11 2009-03-05 03:24:11
+
+3.字符到日期操作to_date
+	sys@ora10g>alter session set nls_date_format='yyyy-mm-dd hh24:mi:ss';
+
+	Session altered.
+
+	sys@ora10g>select sysdate, to_date('2005-01-01 13:14:20','yyyy-MM-dd HH24:mi:ss') time from dual;
+
+	SYSDATE TIME
+	------------------- -------------------
+	2009-03-05 03:24:49 2005-01-01 13:14:20
+
+4.日期时间的加、减、乘运算
+	1).当前时间减去6分钟的时间
+	sys@ora10g>select sysdate,sysdate - interval '6' minute "Sysdate - 6 minutes" from dual;
+
+	SYSDATE Sysdate - 6 minutes
+	------------------- -------------------
+	2009-03-05 03:59:53 2009-03-05 03:53:53
+
+	2).当前时间减去6小时的时间
+	sys@ora10g>select sysdate, sysdate - interval '6' hour "Sysdate - 6 hours" from dual;
+
+	SYSDATE Sysdate - 6 hours
+	------------------- -------------------
+	2009-03-05 04:00:54 2009-03-04 22:00:54
+
+	3).当前时间减去6天的时间
+	sys@ora10g>select sysdate, sysdate - interval '6' day "Sysdate - 6 days" from dual;
+
+	SYSDATE Sysdate - 6 days
+	------------------- -------------------
+	2009-03-05 04:01:53 2009-02-27 04:01:53
+
+	4).当前时间减去6月的时间
+	sys@ora10g>select sysdate,sysdate - interval '6' month "Sysdate - 6 months" from dual;
+
+	SYSDATE Sysdate - 6 months
+	------------------- -------------------
+	2009-03-05 04:02:53 2008-09-05 04:02:53
+
+	5).当前时间减去6年的时间
+	sys@ora10g>select sysdate,sysdate - interval '6' year "Sysdate - 6 years" from dual;
+
+	SYSDATE Sysdate - 6 years
+	------------------- -------------------
+	2009-03-05 04:03:31 2003-03-05 04:03:31
+
+	6).加法类似，将上面减号替换成减号，举一个当前时间加上6小时例子
+	sys@ora10g>select sysdate, sysdate + interval '6' hour "Sysdate + 6 hours" from dual;
+
+	SYSDATE Sysdate + 6 hours
+	------------------- -------------------
+	2009-03-05 04:04:38 2009-03-05 10:04:38
+
+	7).乘法，当前时间减去6小时乘以2小时，及当前时间减去12个小时
+	sys@ora10g>select sysdate,sysdate - 6 * interval '2' hour "Sysdate - (6 * 2) hours" from dual;
+
+	SYSDATE Sysdate - (6 * 2) hours
+	------------------- -----------------------
+	2009-03-05 04:06:58 2009-03-04 16:06:58
+
+5.返回当前时间年月日小时分秒毫秒，毫秒最大精度为9
+	sys@ora10g>select sysdate, to_char(current_timestamp(9),'yyyy-mm-dd HH24:MI:SSxFF') from dual;
+
+	SYSDATE TO_CHAR(CURRENT_TIMESTAMP(9),
+	------------------- -----------------------------
+	2009-03-05 04:12:11 2009-03-05 04:12:11.255944000
+
+

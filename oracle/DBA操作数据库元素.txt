@@ -1,0 +1,119 @@
+﻿--------------------------表空间
+
+--创建表空间
+create tablespace WZ
+  datafile 'D:\Oracle\oradata\orcl\WZ.dbf' size 100m 
+    autoextend on next 10m maxsize unlimited
+  extent management local 
+  segment space management auto 
+--删除表空间
+drop tablespace wz including contents and datafiles
+--增加数据文件
+alter tablespace wz
+	add datafile 'd:\oracle\product\10.2.0\oradata\orcl\wz1.dbf' size 10m
+--使表空间脱机
+alter tablespace wz offline
+--联机
+alter tablespace wz online
+--查询表空间信息
+select * from dba_tablespaces
+--查询表空间的物理文件
+select * from dba_data_files
+--收缩临时表空间
+alter database tempfile 'D:/ORACLE/ORADATA/ORCL/TEMP01.DBF' resize 500M;
+--更改数据表表空间
+alter table 表名 move tablespace 表空间名;
+
+
+
+--------------------------表、视图
+
+--查询表信息(当前用户所拥有的表、当前用户可以查询的表、数据库中所有的表)
+select * from user_tables
+select * from all_tables
+select * from  dba_tables
+--查询表中可更新的列
+select * from user_updatable_columns 
+--查询当前用户下的视图(数据库中所有视图)
+select * from user_views
+select * from dba_views
+
+
+
+--------------------------索引、序列
+
+--创建索引
+create index idx_id on emp(id);
+--查询当前用户下的序列
+select * from seq;
+
+
+
+--------------------------约束
+
+--查询约束信息(当前用户所拥有的表、当前用户可以查询的表、数据库中所有的表)
+select * from user_constraints
+select * from all_constraints
+select * from dba_constraints
+
+
+
+--------------------------用户
+
+--创建用户
+create user usera identified by usera
+	default tablespace users
+	temporary tablespace temp;
+--删除用户，同时删除用户所拥有的所有模式对象
+drop user usera cascade
+--授予用户权限，（直接授予预定义的角色权限）
+grant connect to usera		--连接数据库
+grant resource to usera		--使用相应资源
+--授予用户权限，（指定对象的指定权限）
+grant select on jobs to usera
+--回收已经授予的权限
+revoke select on jobs from usera
+--修改用户登录口令
+alter user usera identified by password
+--查询数据库中所有的用户
+select * from  dba_users
+--查询本用户所拥有的系统权限
+select * from user_sys_privs
+--查询本用户拥有其他用户对象的权限
+select * from user_tab_privs
+--查询本用户拥有的对象
+select * from user_catalog
+
+
+
+--------------------------数据库实例
+
+--是单实例还是RAC数据库。
+--单实例:NO
+--RAC:YES
+select parallel from v$instance;
+--是否通过备用数据库保护。
+--未保护:UNPROTECTED
+select protection_level from v$database;
+--是否在数据库中配置了流。
+--未配置将不返回任何行
+select * from dba_streams_administrator;
+--查询SGA（系统全局区）组件的状态
+select component, current_size, min_size, max_size from v$sga_dynamic_components;
+--查询PGA（程序全局区）当前分配的内存
+select * from v$pgastat where name in ('maximum PGA allocated', 'total PGA allocated');
+--查询数据文件
+select * from v$datafile;
+--查询控制文件
+select * from v$controlfile;
+--查询重作日志文件
+select * from v$logfile;
+--查询系统启动的后台进程
+select * from v$process
+--查询数据库参数
+select * from v$parameter
+--查询当前数据库的详细信息
+select * from v$database
+--查询当前Oracle版本的详细信息
+select * from v$version
+

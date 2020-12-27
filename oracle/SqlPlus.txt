@@ -1,0 +1,17 @@
+--设置每行显示长度
+set linesize 80;
+
+--设置每页显示行数
+set pagesize 40;
+
+--使用记事本进行SQL文件编辑
+ed test.sql;
+
+--运行文件中的SQL
+@D:\test.sql;
+
+--切换用户
+conn sys/sys as sysdba;
+
+--
+

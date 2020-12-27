@@ -1,0 +1,18 @@
+﻿1、查看ASM SID
+	ps -ef | grep asm_
+2、设置ASM SID
+	export ORACLE_SID=+ASM1
+3、登录ASMCMD
+	用grid账户，路径为：/u01/11.2.0/grid/bin
+		./asmcmd
+4、删除归档日志
+	pwd
+	cd +ARCHDG/*/ARCHIVELOG/*
+	rm -fr 2018_09_*
+5、查看删除后空间
+	lsdg
+
+
+	
+	
+	

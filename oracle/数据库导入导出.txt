@@ -1,0 +1,46 @@
+--导出指定用户数据
+exp scott/tiger@orcl file=d:\scott.dmp owner=(scott)
+
+说明：
+	user/password@SID	用户名/密码@数据库连接标识符
+	file=filePath		文件保存路径
+	owner=(user)		要导出数据的用户，可配置多个，用英文逗号分隔。
+					注意：多用户导出必须使用DBA权限，否则会报错
+		
+	示例：
+	exp system/oracle@orcl file=d:\scott.dmp owner=(scott,hr)
+
+
+--导出指定用户的所有表数据
+exp scott/tiger@orcl file=d:\scott.dmp tables=(%)
+
+--导出指定用户的所有表，每个表导出1万行数据
+exp scott/tiger@orcl file=d:\scott.dmp tables=(%) log=d:\scott.log query=\"where rownum<10001\"
+
+
+
+--导入指定用户数据
+--同名用户
+imp scott/tiger@orcl file=d:\scott.dmp full=y ignore=y
+
+说明：
+	full=y		包含全部
+	ignore=y	忽略错误
+
+--不同名用户
+imp scott/tiger@orcl fromuser=hr touser=tiger file=d:\scott.dmp ignore=y
+
+--特殊字符导出
+exp kettle/"""kettle@123"""@orcl file=D:\kettle.dmp owner=(kettle)
+
+
+批量处理空表：
+(1) 查询当前用户下的所有空表
+select table_name from user_tables where num_rows='0';
+(2) 用以下SQL语句执行查询
+select 'alter table '||table_name||' allocate extent;' from user_tables where num_rows=0;
+select 'alter table '||table_name||' allocate extent;' from user_tables where num_rows=0 or num_rows is null;
+(3) 把上面的 alter SQL语句执行就可以了
+(4) 再查询当前用户下的所有空表，这时应该就没有空表了
+select 'analyze table '||table_name||' compute statistics;' from user_tables;
+

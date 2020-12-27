@@ -1,0 +1,36 @@
+--查看哪些对象引用了当前表（包括存储过程和函数等）
+	select * from user_source where lower(text) like '%employees%';
+
+--创建Database link
+	create public database link orcl_hr 
+		connect to hr identified by hr	
+		using '(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = orcl)))';
+
+--查询组织机构及其子机构
+	select * from organization t
+		connect by t.parent_no = prior t.org_no
+		start with t.org_no = '110301'
+
+--Kettle的目录树结构
+	select * from r_directory t
+		connect by t.id_directory = prior t.id_directory_parent
+		start with t.id_directory = 44
+		order by t.id_level
+		
+--触发器实现自增主键
+	create or replace trigger TRI_I_DI_XINGZHENGQUHUA
+	  before insert on DI_XINGZHENGQUHUA
+	  for each row
+	begin
+	  select seq_di_xingzhengquhua_pk.nextval into :new.id from dual;
+	end;
+
+--嵌套语句实现分页查询	
+	select *
+	  from (select a.*, rownum rn
+			  from (select * from table_name) a
+			 where rownum <= 40)
+	 where rn >= 21
+	 
+--带参数的查询
+	select * from employees t where t.department_id = &dept_id

@@ -1,0 +1,30 @@
+﻿1、配置Git:	Git配置有3个级别，--system(系统级) \ --global(用户级) \ --local(仓库级)
+	--查看Git配置
+	git config --list
+	git config user.name
+	--配置用户信息（注意：git和github使用同一个配置文件，改动git配置将影响github配置）
+	git config --global user.name wenz
+	git	config --global user.email ijlhjj@126.com
+	
+2、获取帮助：
+	git help <command>
+	--获取配置命令的帮助信息
+	git help config
+	
+3、获取Git仓库：
+	--在当前目前创建仓库
+	git init
+	--拷贝服务器的仓库
+	git clone https://github.com/ijlhjj/demos.git
+	
+	
+	
+------------------------------------------------------------------------------------------------------
+Git命令行工具有很多命令可以参考Linux命令
+
+1、显示当前目录：
+	pwd
+2、显示当前目录的文件：
+	ll
+3、切换工作目录：
+	cd

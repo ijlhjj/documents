@@ -1,0 +1,65 @@
+DBCP和C3P0连接池常用配置参数一览表
+
+DBCP配置:
+	<bean id="hospitalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName"><value>${jdbcHospital.driverClassName}</value></property>
+		<property name="url"><value>${jdbcHospital.url}</value></property>
+		<property name="username"><value>${jdbcHospital.username}</value></property>
+		<property name="password"><value>${jdbcHospital.password}</value></property>
+		<property name="initialSize" value="10" />
+		<property name="maxActive" value="100" />
+		<property name="maxIdle" value="30" />
+		<property name="minIdle" value="10" />
+		<property name="logAbandoned" value="true" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="1000" />
+		<property name="maxWait" value="5000" />
+	</bean>
+	
+说明：
+	defaultAutoCommit：设置从数据源中返回的连接是否采用自动提交机制，默认值为 true； 
+	defaultReadOnly：设置数据源是否仅能执行只读操作， 默认值为 false； 
+	maxActive：最大连接数据库连接数，设置为0时，表示没有限制； 
+	maxIdle：最大等待连接中的数量，设置为0时，表示没有限制； 
+	maxWait：最大等待秒数，单位为毫秒， 超过时间会报出错误信息； 
+	validationQuery：用于验证连接是否成功的查询SQL语句，SQL语句必须至少要返回一行数据， 如你可以简单地设置为：“select count(*) from user”； 
+	removeAbandoned：是否自我中断，默认是 false ； 
+	removeAbandonedTimeout：几秒后数据连接会自动断开，在removeAbandoned为true，提供该值； 
+	logAbandoned：是否记录中断事件， 默认为 false；
+
+
+
+C3P0配置：
+	<bean id="hospitalDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${jdbcHospital.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbcHospital.url}" />
+		<property name="user" value="${jdbcHospital.username}" />
+		<property name="password" value="${jdbcHospital.password}" />
+		<property name="maxPoolSize" value="60" />
+		<property name="minPoolSize" value="10" />
+		<property name="initialPoolSize" value="10" />
+		<property name="breakAfterAcquireFailure" value="true" /> 
+		<property name="testConnectionOnCheckout" value="true" />
+		<property name="testConnectionOnCheckin" value="true" />        
+	</bean>
+	
+说明：
+	acquireIncrement：当连接池中的连接用完时，C3P0一次性创建新连接的数目； 
+	acquireRetryAttempts：定义在从数据库获取新连接失败后重复尝试获取的次数，默认为30； 
+	acquireRetryDelay：两次连接中间隔时间，单位毫秒，默认为1000； 
+	autoCommitOnClose：连接关闭时默认将所有未提交的操作回滚。默认为false； 
+	automaticTestTable： C3P0将建一张名为Test的空表，并使用其自带的查询语句进行测试。如果定义了这个参数，那么属性preferredTestQuery将被忽略。你 不能在这张Test表上进行任何操作，它将中为C3P0测试所用，默认为null； 
+	breakAfterAcquireFailure：获取连接失败将会引起所有等待获取连接的线程抛出异常。但是数据源仍有效保留，并在下次调   用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试获取连接失败后该数据源将申明已断开并永久关闭。默认为 false； 
+	checkoutTimeout：当连接池用完时客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒，默认为0； 
+	connectionTesterClassName：通过实现ConnectionTester或QueryConnectionTester的类来测 试连接，类名需设置为全限定名。默认为 com.mchange.v2.C3P0.impl.DefaultConnectionTester； 
+	idleConnectionTestPeriod：隔多少秒检查所有连接池中的空闲连接，默认为0表示不检查； 
+	initialPoolSize：初始化时创建的连接数，应在minPoolSize与maxPoolSize之间取值。默认为3； 
+	maxIdleTime：最大空闲时间，超过空闲时间的连接将被丢弃。为0或负数则永不丢弃。默认为0； 
+	maxPoolSize：连接池中保留的最大连接数。默认为15； 
+	maxStatements：JDBC的标准参数，用以控制数据源内加载的PreparedStatement数量。但由于预缓存的Statement属 于单个Connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素，如果maxStatements与 maxStatementsPerConnection均为0，则缓存被关闭。默认为0； 
+	maxStatementsPerConnection：连接池内单个连接所拥有的最大缓存Statement数。默认为0； 
+	numHelperThreads：C3P0是异步操作的，缓慢的JDBC操作通过帮助进程完成。扩展这些操作可以有效的提升性能，通过多线程实现多个操作同时被执行。默认为3； 
+	preferredTestQuery：定义所有连接测试都执行的测试语句。在使用连接测试的情况下这个参数能显著提高测试速度。测试的表必须在初始数据源的时候就存在。默认为null； 
+	propertyCycle： 用户修改系统配置参数执行前最多等待的秒数。默认为300； 
+	testConnectionOnCheckout：因性能消耗大请只在需要的时候使用它。如果设为true那么在每个connection提交的时候都将校验其有效性。建议使用idleConnectionTestPeriod或automaticTestTable等方法来提升连接测试的性能。默认为false； 
+	testConnectionOnCheckin：如果设为true那么在取得连接的同时将校验连接的有效性。默认为false。

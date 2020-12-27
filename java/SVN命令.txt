@@ -1,0 +1,20 @@
+1、创建资源库
+	svnadmin create F:\SVN_Resource\sweetmanor
+
+2、启动SVN服务
+	svnserve -d -r F:\SVN_Resource
+	
+3、注册为Windows服务：
+	sc create svn binPath= "d:\subversion\bin\svnserve.exe --service -r D:\softsource" displayname= "Subversion服务" depend= TcpIp
+		说明：
+			sc：Windows自带的sc.exe工具的命令；
+			svn：服务名称；
+			binpath：启动程序路径。D:\Subversion\bin\svnserve.exe是程序路径，–service是注册为服务，–r D:\SoftSource是程序运行参数；
+			displayname：显示的服务名称；
+			depend：此服务依赖的服务名称。
+
+	sc delete svn
+		删除svn服务。
+
+
+

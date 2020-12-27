@@ -1,0 +1,147 @@
+一、系统命令：
+
+1、查看Linux版本：
+	cat /proc/version		
+	uname –a	
+	uname –r		查看内核版本
+	uname –m		查看系统是32位还是64位
+	lsb_release -a		查看系统版本
+	cat /etc/redhat-release		查看CentOS版本
+2、查看是否安装指定软件包：
+	rpm -q package_name
+	rpm -qa|grep jdk		查看JDK安装版本
+	rpm –i gcc-4.4.4-11.el6.x86_64.rpm	安装指定软件包
+	rpm –i gcc-4.4.4-11.el6.x86_64.rpm --nodeps	强制安装
+3、同步系统时间：
+	ntpdate 10.8.1.102
+4、查看内存：
+	free
+	grep MemTotal /proc/meminfo		查看物理内存
+	grep SwapTotal /proc/meminfo		查看交换空间
+5、重启系统：
+	reboot	重启系统
+	halt	关闭系统
+6、关闭防火墙：
+	service iptables stop
+7、查看磁盘空间使用情况：
+	df -h
+	df -k 
+8、查看文件夹大小：
+	du -h --max-depth=1	当前目录、深度为1
+9、查看运行中的程序：
+	ps -ef | grep java	查看java进程
+10、安装软件
+	yum -y install maven	安装maven
+11、后台运行Java程序
+	nohup java -jar xx.jar >nohup.out &  
+
+
+
+二、用户管理：
+
+1、查看用户组：
+	cat /etc/group
+	grep dba /etc/group	查看dba组是否存在
+	groups			查看当前用户的组内成员
+	groups oracle		查看oracle用户的用户组
+
+	/usr/sbin/groupadd dba	创建dba用户组
+2、查看用户的组信息：
+	id oracle
+	/usr/sbin/usermod -g oinstall -G dba oracle		修改oracle用户的主用户组为oinstall，辅助用户组为oracle
+	/usr/sbin/useradd -g oinstall -G dba oracle		添加oracle用户，并设置主用户组为oinstall，辅助用户组为oracle
+
+	adduser oracle		添加用户
+	passwd oracle		对新建用户设置密码
+3、切换用户
+	su root		切换为root用户
+
+
+
+三、文件操作：
+
+1、显示文件或目录：
+	ls [选项] <目录或文件名>	
+		-a	显示所有文件
+		-l	显示完整信息
+		-t	按时间倒排序
+		-R	遍历显示子目录	？
+	ls -al /	显示根目录下所有文件完整信息
+	ls -at a*	显示当前目录以a开头的文件，按时倒排序
+	ll	简写形式
+2、文本编辑：
+	vi	wq保存退出
+3、查看文件内容：
+	cat [选项] <文件1> <文件2>...
+		-n	显示行号
+		-b	空行不编号
+		-s	多个空行只显示一个
+		-v	显示不可打印字符
+	cat -n hello.c		带行号显示文件内容
+	cat test1.c test2.c	串接输出文件内容
+4、特殊目录：
+	.	当前目录
+	..	父目录
+	~	用户目录
+	~root	root用户的根目录
+	-	前一个工作目录
+5、改变当前目录：
+	cd
+6、复制文件：
+	cp [选项] <源文件或目录> <目标文件或目录>
+		-r	包含子目录
+		-f	强制覆盖
+	cp test.c /tmp/program.c	拷贝并改名
+	cp *.c /tmp	拷贝所有c文件
+7、删除文件：
+	rm [选项] <文件或目录> 
+		-d	删除目录
+		-i	删除前确认
+		-r	删除目录下所有文件
+		-f	强制删除
+	rm *.c		删除所有c文件
+	rm -rf weblogic		强制删除weblogic
+8、移动文件：
+	mv [选项] <源文件或目录> <目标文件或目录>
+		-i	移动前确认
+		-f	强制移动，覆盖同名文件
+	mv test.c program.c	重命名
+	mv *.c /tmp/project	移动c文件，同名文件提示
+9、创建目录：
+	mkdir [选项] <目录>
+		-p	逐级建立不存在的父目录
+	rmdir [选项] <目录>	只能删除空目录，非空报错
+		-p	逐级删除为空的父目录
+10、改变文件所有者
+	chown oracle oracle	更改文件夹所有者	
+
+
+
+四、知识点：
+
+一)、查看Linux系统是64位还是32位？
+	1、64位系统的根目录下一般会有lib和lib64两个目录，32为系统下只有lib目录。
+	2、uname –a命令：
+	64位系统的查询结果会包含x86_64字符串。
+	3、getconf LONG_BIT命令：（getconf WORD_BIT）
+	64位系统的长整型是64，整型是32；
+	32位系统的长整型和整型都是32。
+
+二)、Linux系统下安装Eclipse：
+	1、确认系统需要安装64位还是32位Eclipse。
+	2、在官网下载对应的文件，下载GZ版压缩文件即可。
+	3、把下载的文件放到要安装的机器上。
+	4、解压文件，命令：tar -xf 压缩文件名
+	5、启动测试。
+
+三)、Linux系统下安装TOMCAT：
+	1、官网下载对应的压缩文件，一般没有针对Linux进行优化的版本，下载通用的ZIP版即可。
+	2、把下载的文件放到要安装的机器上。
+	3、解压文件，命令：Unzip 压缩文件名
+	4、增加脚本文件的执行权限：
+			Chmod u+x *.sh
+	5、启动进行测试，在本机用firefox进行访问。
+	6、如果外网不能访问，可关闭本机的防火墙。
+			service iptables stop
+
+

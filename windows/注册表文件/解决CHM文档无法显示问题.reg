@@ -1,0 +1,4 @@
+REGEDIT4
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\HTMLHelp]
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\HTMLHelp\1.x\ItssRestrictions]
+"MaxAllOwedZone"=dword:00000003

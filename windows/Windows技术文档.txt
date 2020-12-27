@@ -1,0 +1,17 @@
+1、创建Windows服务：
+	命令示例：
+		sc create svn binpath= "D:\Program Files (x86)\Subversion\bin\svnserve.exe --service -r F:\SVN_Resource" displayname= "Subversion服务" depend= Tcpip
+	说明：
+		sc 是Windows自带的服务
+
+2、Windows打开文件数的限制：
+	在注册表中：
+		[HKEY_LOCAL_MACHINE/SOFTWARE/Microsoft/Windows NT/CurrentVersion/Windows/USERProcessHandleQuota]
+		XP上缺省是10000
+
+	根据MSDN描述，C运行库在Windows中打开文件数的限制如下：
+		C run-time I/O now supports many more open files on Win32 platforms than in previous versions. Up to 2,048 files can be open simultaneously at the lowio level (that is, opened and accessed by means of the _open, _read, _write, and so forth family of I/O functions). Up to 512 files can be open simultaneously at the stdio level (that is, opened and accessed by means of the fopen, fgetc, fputc, and so forth family of functions). The limit of 512 open files at the stdio level can be increased to a maximum of 2,048 by means of the _setmaxstdio function.
+		
+3、后台运行bat脚本：
+	在执行的命令前加上 start /b ，比如 start /b run.bat ，就相当于Linux下的 run.sh &
+	在对应的文件run.bat第一行写上 @echo off ，那么命令行执行过程中就不会有任何输出了 

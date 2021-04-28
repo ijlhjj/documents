@@ -1,0 +1,7 @@
+1、创建项目：
+    scrapy startproject myProject 
+2、创建爬取模块：
+    scrapy genspider mySpider "website.com"
+3、运行爬取任务：
+    scrapy crawl mySpider
+	

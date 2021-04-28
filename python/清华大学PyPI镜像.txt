@@ -1,0 +1,2 @@
+清华大学的pip源:
+    https://pypi.tuna.tsinghua.edu.cn/simple

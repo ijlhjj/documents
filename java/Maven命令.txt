@@ -1,2 +1,5 @@
 --拷贝依赖包到指定目录
 	mvn dependency:copy-dependencies
+	
+--查看项目依赖树
+    mvn dependency:tree

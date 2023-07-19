@@ -5,6 +5,9 @@
 	--配置用户信息（注意：git和github使用同一个配置文件，改动git配置将影响github配置）
 	git config --global user.name wenz
 	git	config --global user.email ijlhjj@126.com
+    --配置换行符处理
+    git config --global core.autocrlf true
+    git config --global core.safecrlf true
 	
 2、获取帮助：
 	git help <command>

@@ -1,0 +1,4 @@
+1、安装指定版本Python
+	conda create -n Python27 python=2.7
+	conda activate Python27
+	conda deactivate
